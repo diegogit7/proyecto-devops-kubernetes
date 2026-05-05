@@ -2,7 +2,7 @@
 
 ## 📋 Descripción
 
-Despliegue de una aplicación web en un clúster de Kubernetes. (opcion local o imagen publica) 
+Despliegue de una aplicación web en un clúster de Kubernetes. (opción local o imagen publica) 
 
 ## 🛠️ Tecnologías usadas
 
