@@ -1,53 +1,80 @@
-# 🚀 Proyecto: Despliegue en Kubernetes local con kind
+# 🚀 Proyecto: Despliegue en Kubernetes
 
 ## 📋 Descripción
 
-Despliegue de una aplicación web en un clúster de Kubernetes local usando **kind** (Kubernetes in Docker).
+Despliegue de una aplicación web en un clúster de Kubernetes.(opcion local o imagen publica) 
 
 ## 🛠️ Tecnologías usadas
 
-- **Docker**: Contenerización de la aplicación
-- **kind**: Clúster Kubernetes local
-- **kubectl**: Gestión del clúster
-- **Linux Mint**: Sistema operativo
-- **nginx**: Servidor web
+- **Docker**
+- **kind**
+- **kubectl**
+- **nginx**
+- **GitHub Container Registry (GHCR)**
 
-## 📸 Resultados
+## 📦 Paquete público
 
-### Pods corriendo (3 réplicas)
-![Pods](capturas/1-pods.png)
+La imagen está publicada en GHCR:
 
-### Servicio NodePort expuesto
-![Services](capturas/2-services.png)
+`ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1`
 
-### Port-forward activo
-![Port-forward](capturas/3-port-forward.png)
+## 🚀 Cómo correr el proyecto
 
-### Aplicación funcionando en el navegador
-![Navegador](capturas/4-navegador.png)
+### Opción 1: Automático (usar la imagen pública)
 
-## 🧪 Cómo reproducirlo
+No necesitas Docker. Solo kind y kubectl.
+
+**Paso a paso:**
 
 ```bash
-# 1. Crear clúster kind
+# 1. Clonar el repositorio
+git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
+
+# 2. Entrar a la carpeta
+cd proyecto-devops-kubernetes
+
+# 3. Crear el clúster de Kubernetes
 kind create cluster --name devops-cluster
 
-# 2. Construir imagen Docker
-docker build -t mi-web:v1 .
+# 4. Desplegar la aplicación (la imagen se baja sola de GHCR)
+kubectl apply -f deploy-ghcr.yaml
 
-# 3. Cargar imagen al clúster
-kind load docker-image mi-web:v1 --name devops-cluster
-
-# 4. Desplegar en Kubernetes
-kubectl apply -f deploy.yaml
-
-# 5. Exponer el servicio
+# 5. Exponer la web
 kubectl port-forward service/web-service 8080:80
 
-#🧹 Limpieza (opcional)
+# 6. Entrar al navegador
+Abrir http://localhost:8080
 
-Cuando termines, destruye el clúster para liberar recursos:
-bash
 
-kind delete cluster --name devops-cluster
- 
+
+### Opción 2: Construir la imagen localmente (para modificar la web)
+
+Necesitas Docker
+
+# 1. Clonar el repositorio
+git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
+
+# 2. Entrar a la carpeta
+cd proyecto-devops-kubernetes
+
+# 3. Construir la imagen
+docker build -t mi-web:v1 .
+
+# 4. Crear el clúster
+kind create cluster --name devops-cluster
+
+# 5. Cargar la imagen al clúster
+kind load docker-image mi-web:v1 --name devops-cluster
+
+# 6. Desplegar
+kubectl apply -f deploy.yaml
+
+# 7. Exponer la web
+kubectl port-forward service/web-service 8080:80
+
+# 8. Entrar al navegador
+Abrir http://localhost:8080
+
+
+## Cuando no se quiera usar mas ser recomienda limpiar 🧹
+kind delete cluster --name devops-cluster 
