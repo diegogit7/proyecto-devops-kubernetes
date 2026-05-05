@@ -2,7 +2,7 @@
 
 ## 📋 Descripción
 
-Despliegue de una aplicación web en un clúster de Kubernetes.(opcion local o imagen publica) 
+Despliegue de una aplicación web en un clúster de Kubernetes. (opcion local o imagen publica) 
 
 ## 🛠️ Tecnologías usadas
 
@@ -44,12 +44,12 @@ kubectl port-forward service/web-service 8080:80
 
 # 6. Entrar al navegador
 Abrir http://localhost:8080
-
-
+```
 
 ### Opción 2: Construir la imagen localmente (para modificar la web)
 
 Necesitas Docker
+```
 
 # 1. Clonar el repositorio
 git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
