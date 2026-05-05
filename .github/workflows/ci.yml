@@ -1,0 +1,35 @@
+name: CI - Build Docker Image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image
+        run: docker build -t mi-web:v1 .
+      
+      - name: Verify image exists
+        run: docker images | grep mi-web
+      
+      - name: Test image
+        run: |
+          docker run -d --name test-web -p 8080:80 mi-web:v1
+          sleep 3
+          curl -f http://localhost:8080 || exit 1
+          docker stop test-web
+          docker rm test-web
+      
+      - name: Success message
+        run: echo "✅ Imagen construida y testeada exitosamente"
