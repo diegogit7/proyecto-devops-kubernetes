@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: web-container
-        image: mi-web:v1
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 ---
