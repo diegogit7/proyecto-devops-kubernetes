@@ -34,11 +34,11 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Tag image for GHCR
-        run: docker tag mi-web:v1 ghcr.io/diegogit7/mi-web:v1
+      - name: Tag image for GHCR (with repo name)
+        run: docker tag mi-web:v1 ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1
 
       - name: Push image to GHCR
-        run: docker push ghcr.io/diegogit7/mi-web:v1
+        run: docker push ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1
 
       - name: Success message
-        run: echo "✅ Imagen construida, testeada y publicada en GHCR"
+        run: echo "✅ Imagen publicada en ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1"
