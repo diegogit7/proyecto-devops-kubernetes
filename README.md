@@ -2,13 +2,7 @@
 
 ## 📋 Descripción
 
-Despliegue de una aplicación web en un clúster de Kubernetes local usando **kind** (Kubernetes in Docker). El proyecto demuestra:
-
-- Creación de imágenes Docker personalizadas
-- Orquestación de contenedores con Kubernetes
-- Escalamiento horizontal (3 réplicas)
-- Balanceo de carga interno
-- Exposición de servicios mediante port-forwarding
+Despliegue de una aplicación web en un clúster de Kubernetes local usando **kind** (Kubernetes in Docker).
 
 ## 🛠️ Tecnologías usadas
 
@@ -49,3 +43,11 @@ kubectl apply -f deploy.yaml
 
 # 5. Exponer el servicio
 kubectl port-forward service/web-service 8080:80
+
+#🧹 Limpieza (opcional)
+
+Cuando termines, destruye el clúster para liberar recursos:
+bash
+
+kind delete cluster --name devops-cluster
+ 
