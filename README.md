@@ -27,6 +27,8 @@ No necesitas Docker. Solo kind y kubectl.
 **Paso a paso:**
 
 ```bash
+
+
 # 1. Clonar el repositorio
 git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
 
@@ -36,13 +38,20 @@ cd proyecto-devops-kubernetes
 # 3. Crear el clúster de Kubernetes
 kind create cluster --name devops-cluster
 
-# 4. Desplegar la aplicación (la imagen se baja sola de GHCR)
+# 4. Crear el secret (con tu token de GitHub)
+ *importante: El token debe tener permiso read:packages
+kubectl create secret docker-registry ghcr-secret \
+  --docker-server=ghcr.io \
+  --docker-username=diegogit7 \
+  --docker-password=TU_TOKEN_AQUI
+
+# 5. Desplegar la aplicación (la imagen se baja sola de GHCR)
 kubectl apply -f deploy-ghcr.yaml
 
-# 5. Exponer la web
+# 6. Exponer la web
 kubectl port-forward service/web-service 8080:80
 
-# 6. Entrar al navegador
+# 7. Entrar al navegador
 Abrir http://localhost:8080
 ```
 
