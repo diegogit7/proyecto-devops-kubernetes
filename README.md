@@ -1,89 +1,56 @@
-# 🚀 Proyecto: Despliegue en Kubernetes
+
+# Proyecto DevOps: Despliegue en Kubernetes con GitOps
 
 ## 📋 Descripción
 
-Despliegue de una aplicación web en un clúster de Kubernetes. (opción local o imagen publica) 
+Aplicación web desplegada en Kubernetes usando **Kind**. El despliegue es automático mediante **GitOps con ArgoCD**. La imagen se publica en **GHCR** y cada cambio en Git sincroniza el clúster sin intervención manual.
 
-## 🛠️ Tecnologías usadas
+## 🛠️ Tecnologías
 
-- **Docker**
-- **kind**
-- **kubectl**
-- **nginx**
-- **GitHub Container Registry (GHCR)**
-
-## 📦 Paquete público
-
-La imagen está publicada en GHCR:
-
-`ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1`
+- Docker / GHCR
+- Kind / kubectl
+- ArgoCD (GitOps)
+- GitHub Actions (CI)
 
 ## 🚀 Cómo correr el proyecto
 
-### Opción 1: Automático (usar la imagen pública)
+### Requisitos
 
-No necesitas Docker. Solo kind y kubectl.
+- kind, kubectl
+- Token de GitHub (permisos `read:packages`)
 
-**Paso a paso:**
+### Instalación (un solo comando)
 
 ```bash
-
-
-# 1. Clonar el repositorio
 git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
-
-# 2. Entrar a la carpeta
 cd proyecto-devops-kubernetes
+chmod +x setup.sh
+./setup.sh <tu_token_de_github>
 
-# 3. Crear el clúster de Kubernetes
-kind create cluster --name devops-cluster
-
-# 4. Crear el secret (con tu token de GitHub)
- *importante: El token debe tener permiso read:packages
-kubectl create secret docker-registry ghcr-secret \
-  --docker-server=ghcr.io \
-  --docker-username=diegogit7 \
-  --docker-password=TU_TOKEN_AQUI
-
-# 5. Desplegar la aplicación (la imagen se baja sola de GHCR)
-kubectl apply -f deploy-ghcr.yaml
-
-# 6. Exponer la web
-kubectl port-forward service/web-service 8080:80
-
-# 7. Entrar al navegador
-Abrir http://localhost:8080
 ```
 
-### Opción 2: Construir la imagen localmente (para modificar la web)
 
-Necesitas Docker
+### El script crea el clúster, instala ArgoCD, despliega la app y expone los servicios.
+🌐 Acceso
+
+    App web: http://localhost:8080
+
+    ArgoCD UI: https://localhost:8443 (usuario: admin, contraseña: la que muestra el script)
+
+🔄 GitOps en acción
+
+    Modificá deploy-ghcr.yaml (cambia réplicas, imagen, etc.)
+
+    git push
+
+    ArgoCD detecta el cambio y actualiza el clúster solo
+
+🧹 Limpiar
+bash
 ```
-
-# 1. Clonar el repositorio
-git clone https://github.com/diegogit7/proyecto-devops-kubernetes.git
-
-# 2. Entrar a la carpeta
-cd proyecto-devops-kubernetes
-
-# 3. Construir la imagen
-docker build -t mi-web:v1 .
-
-# 4. Crear el clúster
-kind create cluster --name devops-cluster
-
-# 5. Cargar la imagen al clúster
-kind load docker-image mi-web:v1 --name devops-cluster
-
-# 6. Desplegar
-kubectl apply -f deploy.yaml
-
-# 7. Exponer la web
-kubectl port-forward service/web-service 8080:80
-
-# 8. Entrar al navegador
-Abrir http://localhost:8080
-
-
-## Cuando no se quiera usar mas ser recomienda limpiar 🧹
-kind delete cluster --name devops-cluster 
+kind delete cluster --name devops-cluster
+```
+📦 Imagen pública
+```
+ghcr.io/diegogit7/proyecto-devops-kubernetes/mi-web:v1
+```
